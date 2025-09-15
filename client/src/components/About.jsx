@@ -21,10 +21,10 @@ export default function About() {
             <li style={{ backgroundColor : "white", padding:"10px", display : 'flex', flexDirection : 'column', alignItems: "center", borderRadius: "10px" }}>
               <img src={hari} alt="Hari Kiran" style={{maxWidth : '120px', borderRadius:"50%"}}/>
               <p style={{color : 'black', marginTop: "10px"}}>Hari Kiran</p>
-              <a href="https://github.com/your-github-username" target="_blank" rel="noopener noreferrer" style={{ color: '#0366d6', textDecoration: 'none' }}>
+              <a href="https://github.com/Harihkvent" target="_blank" rel="noopener noreferrer" style={{ color: '#0366d6', textDecoration: 'none' }}>
                 GitHub
               </a>
-              <a href="https://linkedin.com/in/your-linkedin-username" target="_blank" rel="noopener noreferrer" style={{ color: '#0077b5', textDecoration: 'none', marginTop: "5px" }}>
+              <a href="http://linkedin.com/in/hari-kiran-ventrapragada" target="_blank" rel="noopener noreferrer" style={{ color: '#0077b5', textDecoration: 'none', marginTop: "5px" }}>
                 LinkedIn
               </a>
             </li>

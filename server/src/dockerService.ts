@@ -1,38 +1,44 @@
-import Docker from 'dockerode';
+import Docker from "dockerode";
+import os from "os";
+import path from "path";
 
-const docker = new Docker({ socketPath: '//./pipe/docker_engine' });
+// Cross-platform Docker connection
+let dockerOptions: any = {};
 
-export async function createContainer(image: string, name?: string) {
-  const images = await docker.listImages();
-  const imageExists = images.some(img =>
-    img.RepoTags && img.RepoTags.includes(image)
-  );
-
-  if (!imageExists) {
-    await new Promise((resolve, reject) => {
-      docker.pull(image, (err: Error | null, stream: NodeJS.ReadableStream) => {
-        if (err) return reject(err);
-        docker.modem.followProgress(stream, onFinished, onProgress);
-
-        function onFinished(err: Error | null) {
-          if (err) reject(err);
-          else resolve(true);
-        }
-
-        function onProgress(event: any) {
-          // Optional: handle progress events
-        }
-      });
-    });
-  }
-
-  const container = await docker.createContainer({
-    Image: image,
-    name: name,
-    Tty: true,
-  });
-
-  return container;
+if (process.platform === "win32") {
+  dockerOptions = { socketPath: "//./pipe/docker_engine" };
+} else {
+  dockerOptions = { socketPath: "/var/run/docker.sock" };
 }
 
-export { docker };
+const docker = new Docker(dockerOptions);
+
+export const createContainer = async (image: string, name: string) => {
+  return await docker.createContainer({
+    Image: image,
+    name,
+    Tty: true,
+    HostConfig: {
+      Binds: [`${path.resolve("./data")}:/data`], // cross-platform safe
+    },
+  });
+};
+
+export const startContainer = async (id: string) => {
+  const container = docker.getContainer(id);
+  await container.start();
+};
+
+export const stopContainer = async (id: string) => {
+  const container = docker.getContainer(id);
+  await container.stop();
+};
+
+export const removeContainer = async (id: string) => {
+  const container = docker.getContainer(id);
+  await container.remove({ force: true });
+};
+
+export const listContainers = async () => {
+  return await docker.listContainers({ all: true });
+};
