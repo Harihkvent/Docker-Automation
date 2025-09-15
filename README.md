@@ -14,7 +14,7 @@ The project aims to automate Docker container management tasks using Interface. 
 
 1. **Clone the Repository:**
     ```
-     git clone https://github.com/SSameer20/Docker-Automation.git
+     git clone https://github.com/Harihkvent/Docker-Automation.git
      ```
    
 2. **Install Client Dependencies:**
