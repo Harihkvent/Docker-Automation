@@ -35,7 +35,7 @@ The project aims to automate Docker container management tasks using Interface. 
 4. **Start the Server:**
     
      ```
-     node server.js
+     node dist/index.js
      ```
 
 5. **Start the Client:**

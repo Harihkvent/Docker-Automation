@@ -12,33 +12,70 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.listContainers = exports.removeContainer = exports.stopContainer = exports.startContainer = exports.createContainer = void 0;
-const dockerode_1 = __importDefault(require("dockerode"));
-const docker = new dockerode_1.default({ socketPath: '//./pipe/docker_engine' });
-const createContainer = (image, name) => __awaiter(void 0, void 0, void 0, function* () {
-    return yield docker.createContainer({
-        Image: image,
-        name,
-        Tty: true,
-    });
-});
+exports.docker = void 0;
 exports.createContainer = createContainer;
-const startContainer = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    const container = docker.getContainer(id);
-    yield container.start();
-});
 exports.startContainer = startContainer;
-const stopContainer = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    const container = docker.getContainer(id);
-    yield container.stop();
-});
 exports.stopContainer = stopContainer;
-const removeContainer = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    const container = docker.getContainer(id);
-    yield container.remove({ force: true });
-});
 exports.removeContainer = removeContainer;
-const listContainers = () => __awaiter(void 0, void 0, void 0, function* () {
-    return yield docker.listContainers({ all: true });
-});
 exports.listContainers = listContainers;
+const dockerode_1 = __importDefault(require("dockerode"));
+let dockerOptions = {};
+if (process.platform === "win32") {
+    dockerOptions = { socketPath: "//./pipe/docker_engine" };
+}
+else {
+    dockerOptions = { socketPath: "/var/run/docker.sock" };
+}
+exports.docker = new dockerode_1.default(dockerOptions);
+function createContainer(image, name) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const images = yield exports.docker.listImages();
+        const imageExists = images.some((img) => img.RepoTags && img.RepoTags.includes(image));
+        if (!imageExists) {
+            yield new Promise((resolve, reject) => {
+                exports.docker.pull(image, (err, stream) => {
+                    if (err)
+                        return reject(err);
+                    exports.docker.modem.followProgress(stream, (err) => {
+                        if (err)
+                            reject(err);
+                        else
+                            resolve(true);
+                    }, (event) => {
+                        // Optional: progress logging
+                        // console.log(event);
+                    });
+                });
+            });
+        }
+        const container = yield exports.docker.createContainer({
+            Image: image,
+            name: name,
+            Tty: true,
+        });
+        return container;
+    });
+}
+function startContainer(id) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const container = exports.docker.getContainer(id);
+        yield container.start();
+    });
+}
+function stopContainer(id) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const container = exports.docker.getContainer(id);
+        yield container.stop();
+    });
+}
+function removeContainer(id) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const container = exports.docker.getContainer(id);
+        yield container.remove({ force: true });
+    });
+}
+function listContainers() {
+    return __awaiter(this, void 0, void 0, function* () {
+        return yield exports.docker.listContainers({ all: true });
+    });
+}

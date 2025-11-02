@@ -9,15 +9,14 @@ const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
 const dockerRoutes_1 = __importDefault(require("./dockerRoutes"));
 const mcpRoute_1 = __importDefault(require("./mcpRoute"));
-const app = (0, express_1.default)(); // ✅ Declare app before using it
-const port = 5000;
-// ✅ Enable CORS
+const app = (0, express_1.default)();
+const port = process.env.PORT || 5000;
 app.use((0, cors_1.default)());
 app.use(express_1.default.json());
-// ✅ Use your routes
-app.use('/', dockerRoutes_1.default);
-app.use('/', mcpRoute_1.default); // Place this after dockerRoutes
-app.use('/api', mcpRoute_1.default);
+// Routes
+app.use("/", dockerRoutes_1.default);
+app.use("/", mcpRoute_1.default);
+app.use("/api", mcpRoute_1.default);
 app.listen(port, () => {
-    console.log(`Docker Automation API running at http://localhost:${port}`);
+    console.log(`🚀 Docker Automation API running at http://localhost:${port}`);
 });

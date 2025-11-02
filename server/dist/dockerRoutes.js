@@ -14,12 +14,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const dockerController_1 = require("./dockerController");
-const dockerService_1 = require("./dockerService");
 const router = express_1.default.Router();
-router.post('/create', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.post("/create", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { image, name } = req.body;
     try {
-        const container = yield (0, dockerService_1.createContainer)(image, name);
+        const container = yield (0, dockerController_1.createContainer)(image, name);
         res.json({ id: container.id });
     }
     catch (err) {
@@ -27,53 +26,53 @@ router.post('/create', (req, res) => __awaiter(void 0, void 0, void 0, function*
             res.status(500).json({ error: err.message });
         }
         else {
-            res.status(500).json({ error: 'Unknown error' });
+            res.status(500).json({ error: "Unknown error" });
         }
     }
 }));
-router.post('/start/:id', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.post("/start/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         yield (0, dockerController_1.startContainer)(req.params.id);
-        res.json({ status: 'started' });
+        res.json({ status: "started" });
     }
     catch (err) {
         if (err instanceof Error) {
             res.status(500).json({ error: err.message });
         }
         else {
-            res.status(500).json({ error: 'Unknown error' });
+            res.status(500).json({ error: "Unknown error" });
         }
     }
 }));
-router.post('/stop/:id', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.post("/stop/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         yield (0, dockerController_1.stopContainer)(req.params.id);
-        res.json({ status: 'stopped' });
+        res.json({ status: "stopped" });
     }
     catch (err) {
         if (err instanceof Error) {
             res.status(500).json({ error: err.message });
         }
         else {
-            res.status(500).json({ error: 'Unknown error' });
+            res.status(500).json({ error: "Unknown error" });
         }
     }
 }));
-router.delete('/remove/:id', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.delete("/remove/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         yield (0, dockerController_1.removeContainer)(req.params.id);
-        res.json({ status: 'removed' });
+        res.json({ status: "removed" });
     }
     catch (err) {
         if (err instanceof Error) {
             res.status(500).json({ error: err.message });
         }
         else {
-            res.status(500).json({ error: 'Unknown error' });
+            res.status(500).json({ error: "Unknown error" });
         }
     }
 }));
-router.get('/list', (_, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.get("/list", (_, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const containers = yield (0, dockerController_1.listContainers)();
         res.json(containers);
@@ -83,7 +82,7 @@ router.get('/list', (_, res) => __awaiter(void 0, void 0, void 0, function* () {
             res.status(500).json({ error: err.message });
         }
         else {
-            res.status(500).json({ error: 'Unknown error' });
+            res.status(500).json({ error: "Unknown error" });
         }
     }
 }));
