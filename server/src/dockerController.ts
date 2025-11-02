@@ -18,18 +18,28 @@ export async function createContainer(image: string, name: string) {
 
   if (!imageExists) {
     await new Promise((resolve, reject) => {
-      docker.pull(image, (err, stream) => {
+      docker.pull(image, (err: Error | null, stream: NodeJS.ReadableStream) => {
         if (err) return reject(err);
+
+        interface ProgressEvent {
+          status: string;
+          progressDetail: {
+        current: number;
+        total: number;
+          };
+          progress: string;
+          id: string;
+        }
 
         docker.modem.followProgress(
           stream,
-          (err: any) => {
-            if (err) reject(err);
-            else resolve(true);
+          (err: Error | null) => {
+        if (err) reject(err);
+        else resolve(true);
           },
-          (event: any) => {
-            // Optional: progress logging
-            // console.log(event);
+          (event: ProgressEvent) => {
+        // Optional: progress logging
+        // console.log(event);
           }
         );
       });
