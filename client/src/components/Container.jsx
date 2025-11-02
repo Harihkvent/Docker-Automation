@@ -4,6 +4,8 @@ import Loader from 'react-js-loader';
 import '../style/container.css';
 import Navigation from './Navigation';
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 export default function ContainerManager() {
   const [loading, setLoading] = useState(true);
   const [newImage, setNewImage] = useState('');
@@ -12,7 +14,7 @@ export default function ContainerManager() {
 
   const fetchContainers = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/list');
+      const res = await axios.get(`${API_URL}/list`);
       const fetchedContainers = res.data || [];
       setContainers(fetchedContainers);
     } catch (error) {
@@ -22,7 +24,7 @@ export default function ContainerManager() {
 
   const createContainer = async () => {
     try {
-      const res = await axios.post('http://localhost:5000/create', {
+      const res = await axios.post(`${API_URL}/create`, {
         image: newImage,
         name: newName,
       });
@@ -35,7 +37,7 @@ export default function ContainerManager() {
 
   const startContainer = async (containerId) => {
     try {
-      await axios.post(`http://localhost:5000/start/${containerId}`);
+      await axios.post(`${API_URL}/start/${containerId}`);
       alert('Container started');
       fetchContainers();
     } catch (error) {
@@ -45,7 +47,7 @@ export default function ContainerManager() {
 
   const stopContainer = async (containerId) => {
     try {
-      await axios.post(`http://localhost:5000/stop/${containerId}`);
+      await axios.post(`${API_URL}/stop/${containerId}`);
       alert('Container stopped');
       fetchContainers();
     } catch (error) {
@@ -55,7 +57,7 @@ export default function ContainerManager() {
 
   const removeContainer = async (containerId) => {
     try {
-      await axios.delete(`http://localhost:5000/remove/${containerId}`);
+      await axios.delete(`${API_URL}/remove/${containerId}`);
       alert('Container removed');
       fetchContainers();
     } catch (error) {
