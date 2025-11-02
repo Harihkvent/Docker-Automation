@@ -4,13 +4,15 @@ import axios from 'axios';
 import "../style/image.css";
 import Navigation from './Navigation';
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 export default function Images() {
   const [loading, setLoading] = useState(true);
   const [images, setImages] = useState([]);
 
   const fetchImages = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/images", {
+      const res = await axios.get(`${API_URL}/images`, {
         params: {
           flag: true
         }

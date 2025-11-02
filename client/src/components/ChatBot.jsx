@@ -1,6 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import './ChatBot.css';
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 const ChatBot = () => {
   const [messages, setMessages] = useState([
     { text: 'Hi! How can I help you with your containers today?', sender: 'bot' },
@@ -16,7 +18,7 @@ const ChatBot = () => {
     setUserInput('');
 
     try {
-      const res = await fetch('http://localhost:5000/mcp', {
+      const res = await fetch(`${API_URL}/mcp`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ prompt: userInput }),
