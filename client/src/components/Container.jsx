@@ -36,8 +36,11 @@ export default function ContainerManager() {
       });
       alert(`Container created: ${res.data.containerId}`);
       fetchContainers();
+      setNewImage('');
+      setNewName('');
     } catch (error) {
       console.error('Error creating container:', error);
+      alert('Failed to create container');
     }
   };
 
@@ -48,6 +51,7 @@ export default function ContainerManager() {
       fetchContainers();
     } catch (error) {
       console.error('Error starting container:', error);
+      alert('Failed to start container');
     }
   };
 
@@ -58,6 +62,7 @@ export default function ContainerManager() {
       fetchContainers();
     } catch (error) {
       console.error('Error stopping container:', error);
+      alert('Failed to stop container');
     }
   };
 
@@ -68,6 +73,7 @@ export default function ContainerManager() {
       fetchContainers();
     } catch (error) {
       console.error('Error removing container:', error);
+      alert('Failed to remove container');
     }
   };
 
@@ -75,81 +81,137 @@ export default function ContainerManager() {
     fetchContainers();
   }, []);
 
+  const getStatusBadge = (state) => {
+    const statusMap = {
+      running: 'status-running',
+      exited: 'status-stopped',
+      created: 'status-created',
+      paused: 'status-paused',
+    };
+    return statusMap[state?.toLowerCase()] || 'status-default';
+  };
+
   return loading ? (
-    <div className="Loader" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '90vh' }}>
-      <Loader type="spinner-default" bgColor="white" />
+    <div className="loader-container">
+      <Loader type="spinner-default" bgColor="#00d4ff" size={100} />
+      <p className="loading-text">Loading containers...</p>
     </div>
   ) : (
     <>
       <Navigation />
       <div className="container-manager">
-        <h2>Docker Container Manager</h2>
+        <div className="page-header">
+          <h1 className="page-title gradient-text">Container Management</h1>
+          <p className="page-subtitle">Orchestrate your Docker ecosystem</p>
+        </div>
 
         {error && (
-          <div style={{ 
-            background: '#ff6b6b', 
-            color: 'white', 
-            padding: '15px', 
-            borderRadius: '5px', 
-            marginBottom: '20px',
-            textAlign: 'center'
-          }}>
-            <strong>Error:</strong> {error}
-            <br />
-            <small>API URL: {API_URL || 'Not set'}</small>
+          <div className="error-banner">
+            <div className="error-icon">⚠</div>
+            <div className="error-content">
+              <strong>Error:</strong> {error}
+              <br />
+              <small>API URL: {API_URL || 'Not set'}</small>
+            </div>
           </div>
         )}
 
-        <div className="container-actions">
-          <h3>Create Container</h3>
-          <input
-            type="text"
-            value={newImage}
-            onChange={(e) => setNewImage(e.target.value)}
-            placeholder="Enter image name"
-          />
-          <input
-            type="text"
-            value={newName}
-            onChange={(e) => setNewName(e.target.value)}
-            placeholder="Enter container name (optional)"
-          />
-          <button onClick={createContainer}>Create Container</button>
+        <div className="create-section glass-card">
+          <h2 className="section-title">
+            <span className="title-icon">➕</span>
+            Create New Container
+          </h2>
+          <div className="input-group">
+            <div className="input-wrapper">
+              <label>Image Name</label>
+              <input
+                type="text"
+                value={newImage}
+                onChange={(e) => setNewImage(e.target.value)}
+                placeholder="e.g., nginx:latest"
+                className="futuristic-input"
+              />
+            </div>
+            <div className="input-wrapper">
+              <label>Container Name <span className="optional">(optional)</span></label>
+              <input
+                type="text"
+                value={newName}
+                onChange={(e) => setNewName(e.target.value)}
+                placeholder="e.g., my-web-server"
+                className="futuristic-input"
+              />
+            </div>
+          </div>
+          <button onClick={createContainer} className="create-btn" disabled={!newImage}>
+            <span className="btn-icon">🚀</span>
+            Create Container
+          </button>
         </div>
 
-        <div className="container-list">
-          <h3>Manage Containers</h3>
+        <div className="containers-section">
+          <h2 className="section-title">
+            <span className="title-icon">📦</span>
+            Active Containers
+            <span className="container-count">{containers.length}</span>
+          </h2>
+          
           {containers.length === 0 ? (
-            <p style={{ color: 'white', textAlign: 'center', padding: '20px' }}>
-              No containers found. Create one above to get started.
-            </p>
+            <div className="empty-state glass-card">
+              <div className="empty-icon">🐳</div>
+              <h3>No containers found</h3>
+              <p>Create your first container above to get started</p>
+            </div>
           ) : (
-            <table id="info">
-              <thead>
-                <tr>
-                  <th>Container ID</th>
-                  <th>Image</th>
-                  <th>State</th>
-                  <th>Status</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {containers.map((container, index) => (
-                  <tr key={index}>
-                    <td>{container.Id}</td>
-                    <td>{container.Image}</td>
-                    <td>{container.State}</td>
-                    <td>{container.Status}</td>
-                    <td>
-                      <button onClick={() => startContainer(container.Id)}>Start</button>
-                      <button onClick={() => stopContainer(container.Id)}>Stop</button>
-                      <button onClick={() => removeContainer(container.Id)}>Remove</button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+            <div className="container-grid">
+              {containers.map((container, index) => (
+                <div key={index} className="container-card glass-card">
+                  <div className="card-header">
+                    <div className="container-id">
+                      <span className="id-label">ID:</span>
+                      <code>{container.Id.substring(0, 12)}</code>
+                    </div>
+                    <span className={`status-badge ${getStatusBadge(container.State)}`}>
+                      {container.State}
+                    </span>
+                  </div>
+                  
+                  <div className="card-body">
+                    <div className="info-row">
+                      <span className="info-label">Image</span>
+                      <span className="info-value">{container.Image}</span>
+                    </div>
+                    <div className="info-row">
+                      <span className="info-label">Status</span>
+                      <span className="info-value">{container.Status}</span>
+                    </div>
+                  </div>
+                  
+                  <div className="card-actions">
+                    <button 
+                      onClick={() => startContainer(container.Id)} 
+                      className="action-btn start-btn"
+                      disabled={container.State === 'running'}
+                    >
+                      ▶ Start
+                    </button>
+                    <button 
+                      onClick={() => stopContainer(container.Id)} 
+                      className="action-btn stop-btn"
+                      disabled={container.State !== 'running'}
+                    >
+                      ⏸ Stop
+                    </button>
+                    <button 
+                      onClick={() => removeContainer(container.Id)} 
+                      className="action-btn remove-btn"
+                    >
+                      🗑 Remove
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
           )}
         </div>
       </div>

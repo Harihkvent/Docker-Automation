@@ -1,34 +1,74 @@
 import React from 'react';
 import Navigation from './Navigation';
-import hari from "../media/hari.jpeg"; // make sure you add your image in media folder
+import hari from "../media/hari.jpeg";
+import '../style/about.css';
 
 export default function About() {
   return (
     <>
       <Navigation />
-      <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif', display :"flex", justifyContent:"center", flexDirection:"column",alignItems: "center" }}>
-        <h1 style={{ textAlign: 'center' }}>About Me</h1>
-        <p style={{ fontSize: '18px', lineHeight: '1.6' , maxWidth : "70vw"}}>
-          Hi, I’m <b>Hari Kiran</b>, a final-year B.Tech student specializing in Information Technology with a strong interest in 
-          <b> Full-Stack Development, Generative AI, and DevOps</b>.  
-          I’ve worked on projects involving <b>Docker, MERN Stack, Chatbots, and AI-driven systems</b>.  
-          My goal is to build intelligent, scalable applications that combine AI and modern web technologies 
-          to solve real-world problems.
-        </p>
-        <div style={{ marginTop: '20px' }}>
-          <h3 style={{ marginBottom: '10px' }}>Connect with me</h3>
-          <ul style={{ listStyleType: 'none', padding: '0', display : 'flex', gap: '20px' }}>
-            <li style={{ backgroundColor : "white", padding:"10px", display : 'flex', flexDirection : 'column', alignItems: "center", borderRadius: "10px" }}>
-              <img src={hari} alt="Hari Kiran" style={{maxWidth : '120px', borderRadius:"50%"}}/>
-              <p style={{color : 'black', marginTop: "10px"}}>Hari Kiran</p>
-              <a href="https://github.com/Harihkvent" target="_blank" rel="noopener noreferrer" style={{ color: '#0366d6', textDecoration: 'none' }}>
-                GitHub
-              </a>
-              <a href="http://linkedin.com/in/hari-kiran-ventrapragada" target="_blank" rel="noopener noreferrer" style={{ color: '#0077b5', textDecoration: 'none', marginTop: "5px" }}>
-                LinkedIn
-              </a>
-            </li>
-          </ul>
+      <div className="about-page">
+        <div className="about-header">
+          <h1 className="about-title gradient-text">About Me</h1>
+          <p className="about-subtitle">Building the future, one line at a time</p>
+        </div>
+
+        <div className="profile-section">
+          <div className="profile-card">
+            <div className="profile-content">
+              <div className="avatar-container">
+                <div className="avatar-glow"></div>
+                <img src={hari} alt="Hari Kiran" className="avatar-img" />
+              </div>
+
+              <div className="profile-info">
+                <h2 className="profile-name">Hari Kiran</h2>
+                <p className="profile-role">Full-Stack Developer • AI Enthusiast • DevOps Engineer</p>
+                
+                <p className="profile-bio">
+                  Final-year <b>B.Tech student</b> specializing in Information Technology with a strong passion for 
+                  <b> Full-Stack Development, Generative AI, and DevOps</b>. I've architected projects involving 
+                  <b> Docker, MERN Stack, Chatbots, and AI-driven systems</b>. My mission is to build intelligent, 
+                  scalable applications that combine cutting-edge AI with modern web technologies to solve real-world problems.
+                </p>
+
+                <div className="skills-section">
+                  <h3 className="skills-title">Tech Stack & Expertise</h3>
+                  <div className="skills-grid">
+                    <span className="skill-tag">Docker</span>
+                    <span className="skill-tag">MERN Stack</span>
+                    <span className="skill-tag">TypeScript</span>
+                    <span className="skill-tag">Generative AI</span>
+                    <span className="skill-tag">DevOps</span>
+                    <span className="skill-tag">React</span>
+                    <span className="skill-tag">Node.js</span>
+                    <span className="skill-tag">AI Chatbots</span>
+                  </div>
+                </div>
+
+                <div className="social-links">
+                  <a 
+                    href="https://github.com/Harihkvent" 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="social-btn github"
+                  >
+                    <span className="social-icon">🐙</span>
+                    GitHub
+                  </a>
+                  <a 
+                    href="http://linkedin.com/in/hari-kiran-ventrapragada" 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="social-btn linkedin"
+                  >
+                    <span className="social-icon">💼</span>
+                    LinkedIn
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </>

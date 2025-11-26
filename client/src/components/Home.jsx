@@ -19,19 +19,37 @@ export default function Home() {
       }
     }, [index, displayedText, text, speed]);
   
-    return <span id="main-title">{displayedText}</span>;
+    return <h1 className="main-title gradient-text">{displayedText}</h1>;
   };
 
   return (
     <>
     <Navigation />
-    <section>
-      <div className="main-head">
-        <img src={dockerImage} alt="" srcset="" id="main-image"/>
-      <TypingEffect text="Docker Automation" speed={50} />
-        
+    <section className="home-section">
+      <div className="floating-shapes">
+        <div className="shape shape-1"></div>
+        <div className="shape shape-2"></div>
+        <div className="shape shape-3"></div>
       </div>
-
+      
+      <div className="main-head">
+        <div className="logo-container">
+          <div className="logo-glow"></div>
+          <img src={dockerImage} alt="Docker" className="main-image"/>
+        </div>
+        
+        <TypingEffect text="Docker Automation" speed={50} />
+        
+        <p className="subtitle">
+          Next-Generation Container Management Platform
+        </p>
+        
+        <div className="feature-pills">
+          <span className="pill">Intelligent</span>
+          <span className="pill">Fast</span>
+          <span className="pill">Secure</span>
+        </div>
+      </div>
     </section>
     </>
   )
