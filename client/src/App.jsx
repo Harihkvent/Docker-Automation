@@ -5,7 +5,6 @@ import { Routes, Route } from 'react-router-dom';
 import Images from './components/Images';
 import About from './components/About';
 import Container from './components/Container';
-import ChatBot from './components/ChatBot';
 
 export default function App() {
   return (
@@ -19,7 +18,6 @@ export default function App() {
         <Route path="/container" element={<Container />} />
         <Route path="/about" element={<About />} />
       </Routes>
-      <ChatBot /> {/* Always render the ChatBot component */}
     </div>
   );
 }
