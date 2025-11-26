@@ -1,0 +1,15 @@
+services:
+  # Backend API Service
+  - type: web
+    name: docker-automation-api
+    runtime: docker
+    dockerfilePath: ./server/Dockerfile
+    dockerContext: ./server
+    envVars:
+      - key: PORT
+        value: 5000
+      - key: NODE_ENV
+        value: production
+    # Mount Docker socket to enable Docker operations
+    # Note: This requires a native environment, not available on Render's free tier
+    # You'll need to use a VPS or dedicated server for Docker socket access
