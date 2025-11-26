@@ -4,14 +4,28 @@
     justify-content: center;
     justify-items: center;
     align-items: center;
-    height  :90vh;
+    height: 90vh;
+    z-index: 1;
 }
 
 #main-image{
     height: 30vh;
+    animation: float 3s ease-in-out infinite;
 }
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
 #main-title{
     font-size: xxx-large;
-    color : white;
+    color: white;
     font-weight: bolder;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    margin-top: 20px;
 }

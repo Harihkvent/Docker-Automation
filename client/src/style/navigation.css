@@ -1,9 +1,10 @@
 nav{
     width: 100vw;
     height: 5vh;
-    background-color: inherit;
+    background-color: rgba(0, 0, 0, 0.3);
     display: flex;
     justify-content: center;
+    z-index: 1000;
 }
 
 ul{
@@ -20,4 +21,6 @@ ul{
 ul li > * {
     text-decoration: none;
     color: white;
+    font-weight: bold;
+    font-size: 16px;
 }
