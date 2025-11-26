@@ -11,14 +11,20 @@ export default function ContainerManager() {
   const [newImage, setNewImage] = useState('');
   const [newName, setNewName] = useState('');
   const [containers, setContainers] = useState([]);
+  const [error, setError] = useState(null);
 
   const fetchContainers = async () => {
     try {
+      setLoading(true);
+      setError(null);
       const res = await axios.get(`${API_URL}/list`);
       const fetchedContainers = res.data || [];
       setContainers(fetchedContainers);
+      setLoading(false);
     } catch (error) {
       console.error('Error fetching containers:', error);
+      setError(error.message || 'Failed to fetch containers');
+      setLoading(false);
     }
   };
 
@@ -67,7 +73,6 @@ export default function ContainerManager() {
 
   useEffect(() => {
     fetchContainers();
-    setLoading(false);
   }, []);
 
   return loading ? (
@@ -79,6 +84,21 @@ export default function ContainerManager() {
       <Navigation />
       <div className="container-manager">
         <h2>Docker Container Manager</h2>
+
+        {error && (
+          <div style={{ 
+            background: '#ff6b6b', 
+            color: 'white', 
+            padding: '15px', 
+            borderRadius: '5px', 
+            marginBottom: '20px',
+            textAlign: 'center'
+          }}>
+            <strong>Error:</strong> {error}
+            <br />
+            <small>API URL: {API_URL || 'Not set'}</small>
+          </div>
+        )}
 
         <div className="container-actions">
           <h3>Create Container</h3>
@@ -99,32 +119,38 @@ export default function ContainerManager() {
 
         <div className="container-list">
           <h3>Manage Containers</h3>
-          <table id="info">
-            <thead>
-              <tr>
-                <th>Container ID</th>
-                <th>Image</th>
-                <th>State</th>
-                <th>Status</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {containers.map((container, index) => (
-                <tr key={index}>
-                  <td>{container.Id}</td>
-                  <td>{container.Image}</td>
-                  <td>{container.State}</td>
-                  <td>{container.Status}</td>
-                  <td>
-                    <button onClick={() => startContainer(container.Id)}>Start</button>
-                    <button onClick={() => stopContainer(container.Id)}>Stop</button>
-                    <button onClick={() => removeContainer(container.Id)}>Remove</button>
-                  </td>
+          {containers.length === 0 ? (
+            <p style={{ color: 'white', textAlign: 'center', padding: '20px' }}>
+              No containers found. Create one above to get started.
+            </p>
+          ) : (
+            <table id="info">
+              <thead>
+                <tr>
+                  <th>Container ID</th>
+                  <th>Image</th>
+                  <th>State</th>
+                  <th>Status</th>
+                  <th>Actions</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {containers.map((container, index) => (
+                  <tr key={index}>
+                    <td>{container.Id}</td>
+                    <td>{container.Image}</td>
+                    <td>{container.State}</td>
+                    <td>{container.Status}</td>
+                    <td>
+                      <button onClick={() => startContainer(container.Id)}>Start</button>
+                      <button onClick={() => stopContainer(container.Id)}>Stop</button>
+                      <button onClick={() => removeContainer(container.Id)}>Remove</button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
         </div>
       </div>
     </>
