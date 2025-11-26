@@ -85,28 +85,6 @@ export default function ContainerManager() {
       <div className="container-manager">
         <h2>Docker Container Manager</h2>
 
-        <div style={{ 
-          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', 
-          color: 'white', 
-          padding: '40px', 
-          borderRadius: '15px', 
-          marginBottom: '20px',
-          textAlign: 'center',
-          boxShadow: '0 10px 30px rgba(0,0,0,0.3)'
-        }}>
-          <h3 style={{ fontSize: '28px', marginBottom: '15px', fontWeight: 'bold' }}>
-            🔧 Under Scheduled Maintenance
-          </h3>
-          <p style={{ fontSize: '18px', lineHeight: '1.6' }}>
-            The Docker Container Management service is currently undergoing scheduled maintenance.
-            <br />
-            We'll be back soon with improved performance and features!
-          </p>
-          <p style={{ fontSize: '14px', marginTop: '20px', opacity: '0.9' }}>
-            Thank you for your patience.
-          </p>
-        </div>
-
         {error && (
           <div style={{ 
             background: '#ff6b6b', 
@@ -114,8 +92,7 @@ export default function ContainerManager() {
             padding: '15px', 
             borderRadius: '5px', 
             marginBottom: '20px',
-            textAlign: 'center',
-            display: 'none'
+            textAlign: 'center'
           }}>
             <strong>Error:</strong> {error}
             <br />
@@ -123,30 +100,28 @@ export default function ContainerManager() {
           </div>
         )}
 
-        <div className="container-actions" style={{ opacity: '0.5', pointerEvents: 'none' }}>
+        <div className="container-actions">
           <h3>Create Container</h3>
           <input
             type="text"
             value={newImage}
             onChange={(e) => setNewImage(e.target.value)}
             placeholder="Enter image name"
-            disabled
           />
           <input
             type="text"
             value={newName}
             onChange={(e) => setNewName(e.target.value)}
             placeholder="Enter container name (optional)"
-            disabled
           />
-          <button onClick={createContainer} disabled>Create Container</button>
+          <button onClick={createContainer}>Create Container</button>
         </div>
 
-        <div className="container-list" style={{ opacity: '0.5' }}>
+        <div className="container-list">
           <h3>Manage Containers</h3>
           {containers.length === 0 ? (
             <p style={{ color: 'white', textAlign: 'center', padding: '20px' }}>
-              No containers available during maintenance.
+              No containers found. Create one above to get started.
             </p>
           ) : (
             <table id="info">
@@ -167,9 +142,9 @@ export default function ContainerManager() {
                     <td>{container.State}</td>
                     <td>{container.Status}</td>
                     <td>
-                      <button onClick={() => startContainer(container.Id)} disabled>Start</button>
-                      <button onClick={() => stopContainer(container.Id)} disabled>Stop</button>
-                      <button onClick={() => removeContainer(container.Id)} disabled>Remove</button>
+                      <button onClick={() => startContainer(container.Id)}>Start</button>
+                      <button onClick={() => stopContainer(container.Id)}>Stop</button>
+                      <button onClick={() => removeContainer(container.Id)}>Remove</button>
                     </td>
                   </tr>
                 ))}
