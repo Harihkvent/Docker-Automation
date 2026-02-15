@@ -7,12 +7,12 @@ describe('api.js - getApiUrl', () => {
     global.window = originalWindow;
   });
 
-  test('upgrades http to https when page is served over HTTPS', () => {
+  test('upgrades http to https and strips port when page is served over HTTPS', () => {
     delete global.window;
     global.window = { location: { protocol: 'https:' } };
     process.env.REACT_APP_API_URL = 'http://52.66.195.34:5000';
     const API_URL = require('./api').default;
-    expect(API_URL).toBe('https://52.66.195.34:5000');
+    expect(API_URL).toBe('https://52.66.195.34');
   });
 
   test('does not modify https URL when page is served over HTTPS', () => {
