@@ -86,4 +86,18 @@ router.get("/list", (_, res) => __awaiter(void 0, void 0, void 0, function* () {
         }
     }
 }));
+router.get("/images", (_, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const images = yield (0, dockerController_1.listImages)();
+        res.json({ images });
+    }
+    catch (err) {
+        if (err instanceof Error) {
+            res.status(500).json({ error: err.message });
+        }
+        else {
+            res.status(500).json({ error: "Unknown error" });
+        }
+    }
+}));
 exports.default = router;

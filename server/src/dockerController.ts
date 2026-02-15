@@ -73,3 +73,7 @@ export async function removeContainer(id: string) {
 export async function listContainers() {
   return await docker.listContainers({ all: true });
 }
+
+export async function listImages() {
+  return await docker.listImages({ all: true });
+}
