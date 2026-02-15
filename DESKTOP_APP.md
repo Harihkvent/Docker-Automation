@@ -125,6 +125,7 @@ No internet connection is required — everything runs on your machine.
 | **Window opens but shows a blank page** | Run `npm run build:all` first — the React build must exist in `client/build/`. |
 | **Port 5000 is already in use** | Stop whatever is using port 5000, or set a custom port: `PORT=5001 npm run start:electron` (you will also need to rebuild the client with the matching `REACT_APP_API_URL`). |
 | **AppImage won't launch on Linux** | Make it executable: `chmod +x *.AppImage`. You may also need `libfuse2`: `sudo apt install libfuse2`. |
+| **Windows build fails with "Cannot create symbolic link"** | Run PowerShell/CMD as **Administrator**, or clear the electron-builder cache: `rmdir /s /q %LOCALAPPDATA%\electron-builder\Cache\winCodeSign`. The `dist:win` script already sets `CSC_IDENTITY_AUTO_DISCOVERY=false` to skip code signing, which avoids this in most cases. |
 | **Windows build fails on Linux** | Cross-platform builds require additional tools. Build Windows packages on a Windows machine or use CI. |
 
 ---

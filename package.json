@@ -15,7 +15,7 @@
     "build:all": "npm run build:server && npm run build:client",
     "start:electron": "electron .",
     "dist:linux": "npm run build:all && electron-builder --linux",
-    "dist:win": "npm run build:all && electron-builder --win",
+    "dist:win": "npm run build:all && cross-env CSC_IDENTITY_AUTO_DISCOVERY=false electron-builder --win",
     "dist": "npm run build:all && electron-builder"
   },
   "build": {
@@ -44,7 +44,8 @@
       "target": [
         "nsis"
       ],
-      "icon": "client/public/docker.png"
+      "icon": "client/public/docker.png",
+      "forceCodeSigning": false
     },
     "nsis": {
       "oneClick": false,
