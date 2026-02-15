@@ -81,15 +81,8 @@ function createWindow() {
     },
   });
 
-  // Load the React production build
-  const clientBuildPath = path.join(
-    __dirname,
-    "..",
-    "client",
-    "build",
-    "index.html"
-  );
-  mainWindow.loadFile(clientBuildPath);
+  // Load the React app served by the Express backend
+  mainWindow.loadURL(`http://localhost:${SERVER_PORT}`);
 
   mainWindow.on("closed", () => {
     mainWindow = null;
