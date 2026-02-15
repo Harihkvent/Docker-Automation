@@ -1,6 +1,6 @@
 // Default to localhost:5000 when running inside Electron or when no env var is set
 const isElectron =
-  typeof window !== 'undefined' && window.electronAPI && window.electronAPI.isElectron;
+  typeof window !== 'undefined' && window.electronAPI?.isElectron;
 
 const rawApiUrl =
   process.env.REACT_APP_API_URL || (isElectron ? 'http://localhost:5000' : '');

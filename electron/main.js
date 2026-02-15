@@ -1,10 +1,36 @@
 const { app, BrowserWindow, dialog } = require("electron");
 const path = require("path");
 const { fork } = require("child_process");
+const http = require("http");
 
 let mainWindow;
 let serverProcess;
 const SERVER_PORT = 5000;
+
+/**
+ * Poll the backend server until it responds, then resolve.
+ * Times out after maxAttempts * interval milliseconds.
+ */
+function waitForServer(port, maxAttempts = 20, interval = 500) {
+  return new Promise((resolve, reject) => {
+    let attempts = 0;
+    const check = () => {
+      attempts++;
+      const req = http.get(`http://localhost:${port}/list`, (res) => {
+        resolve();
+      });
+      req.on("error", () => {
+        if (attempts >= maxAttempts) {
+          reject(new Error("Server did not start in time"));
+        } else {
+          setTimeout(check, interval);
+        }
+      });
+      req.end();
+    };
+    check();
+  });
+}
 
 function startServer() {
   const serverPath = path.join(__dirname, "..", "server", "dist", "index.js");
@@ -70,11 +96,17 @@ function createWindow() {
   });
 }
 
-app.whenReady().then(() => {
+app.whenReady().then(async () => {
   startServer();
 
-  // Give the server a moment to start before loading the UI
-  setTimeout(createWindow, 1500);
+  // Wait for the server to accept connections before opening the window
+  try {
+    await waitForServer(SERVER_PORT);
+  } catch {
+    console.warn("Server health check timed out — opening window anyway");
+  }
+
+  createWindow();
 
   app.on("activate", () => {
     if (BrowserWindow.getAllWindows().length === 0) {
