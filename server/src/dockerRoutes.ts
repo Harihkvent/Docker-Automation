@@ -5,6 +5,7 @@ import {
   removeContainer,
   listContainers,
   createContainer,
+  listImages,
 } from "./dockerController";
 
 const router = express.Router();
@@ -66,6 +67,19 @@ router.get("/list", async (_, res) => {
   try {
     const containers = await listContainers();
     res.json(containers);
+  } catch (err) {
+    if (err instanceof Error) {
+      res.status(500).json({ error: err.message });
+    } else {
+      res.status(500).json({ error: "Unknown error" });
+    }
+  }
+});
+
+router.get("/images", async (_, res) => {
+  try {
+    const images = await listImages();
+    res.json({ images });
   } catch (err) {
     if (err instanceof Error) {
       res.status(500).json({ error: err.message });

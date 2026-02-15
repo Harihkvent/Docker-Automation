@@ -18,6 +18,7 @@ exports.startContainer = startContainer;
 exports.stopContainer = stopContainer;
 exports.removeContainer = removeContainer;
 exports.listContainers = listContainers;
+exports.listImages = listImages;
 const dockerode_1 = __importDefault(require("dockerode"));
 let dockerOptions = {};
 if (process.platform === "win32") {
@@ -77,5 +78,10 @@ function removeContainer(id) {
 function listContainers() {
     return __awaiter(this, void 0, void 0, function* () {
         return yield exports.docker.listContainers({ all: true });
+    });
+}
+function listImages() {
+    return __awaiter(this, void 0, void 0, function* () {
+        return yield exports.docker.listImages({ all: true });
     });
 }

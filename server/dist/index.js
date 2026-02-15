@@ -22,11 +22,18 @@ app.use("/api", mcpRoute_1.default);
 const clientBuildPath = path_1.default.join(__dirname, "..", "..", "client", "build");
 app.use(express_1.default.static(clientBuildPath));
 app.get("*", (_req, res, next) => {
-    const indexPath = path_1.default.join(clientBuildPath, "index.html");
-    res.sendFile(indexPath, (err) => {
-        if (err)
-            next();
-    });
+    // Only serve index.html for requests that accept HTML (browser navigation),
+    // not for API calls expecting JSON
+    if (_req.headers.accept && _req.headers.accept.includes("text/html")) {
+        const indexPath = path_1.default.join(clientBuildPath, "index.html");
+        res.sendFile(indexPath, (err) => {
+            if (err)
+                next();
+        });
+    }
+    else {
+        next();
+    }
 });
 app.listen(port, () => {
     console.log(`🚀 Docker Automation API running at http://localhost:${port}`);

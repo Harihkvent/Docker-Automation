@@ -22,10 +22,16 @@ app.use("/api", mcpRoute);
 const clientBuildPath = path.join(__dirname, "..", "..", "client", "build");
 app.use(express.static(clientBuildPath));
 app.get("*", (_req, res, next) => {
-  const indexPath = path.join(clientBuildPath, "index.html");
-  res.sendFile(indexPath, (err) => {
-    if (err) next();
-  });
+  // Only serve index.html for requests that accept HTML (browser navigation),
+  // not for API calls expecting JSON
+  if (_req.headers.accept && _req.headers.accept.includes("text/html")) {
+    const indexPath = path.join(clientBuildPath, "index.html");
+    res.sendFile(indexPath, (err) => {
+      if (err) next();
+    });
+  } else {
+    next();
+  }
 });
 
 app.listen(port, () => {
