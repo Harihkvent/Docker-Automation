@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import './ChatBot.css';
-
-const API_URL = process.env.REACT_APP_API_URL;
+import API_URL from '../api';
 
 const ChatBot = () => {
   const [messages, setMessages] = useState([

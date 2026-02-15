@@ -3,8 +3,7 @@ import axios from 'axios';
 import Loader from 'react-js-loader';
 import '../style/container.css';
 import Navigation from './Navigation';
-
-const API_URL = process.env.REACT_APP_API_URL;
+import API_URL from '../api';
 
 export default function ContainerManager() {
   const [loading, setLoading] = useState(true);

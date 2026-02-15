@@ -182,6 +182,9 @@ REACT_APP_API_URL=https://your-backend-url.com
 **Issue: Docker socket error**
 - Solution: Make sure you're using Railway or a VPS with Docker installed
 
+**Issue: Mixed Content / HTTPS errors**
+- Solution: When deploying the frontend to HTTPS (e.g. Vercel), the `REACT_APP_API_URL` must also use `https://`. Using `http://` will cause the browser to block requests. The client includes an automatic upgrade from `http://` to `https://` when served over HTTPS, but it is best to configure the correct URL.
+
 **Issue: CORS errors**
 - Solution: Verify CORS is enabled in server and the frontend URL matches
 
