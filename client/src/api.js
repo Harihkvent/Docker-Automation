@@ -20,7 +20,8 @@ function getApiUrl(url) {
     result = result.replace('http://', 'https://');
   }
 
-  // Strip port number (e.g. :5000) since nginx handles HTTPS on 443
+  // Strip port number (e.g. :5000) since nginx handles HTTPS on 443.
+  // At this point, result is guaranteed to start with https:// from the steps above.
   result = result.replace(/(https:\/\/[^/:]+):\d+(\/|$)/, '$1$2');
 
   return result;
