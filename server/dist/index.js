@@ -17,6 +17,7 @@ app.use(express_1.default.json());
 app.use("/", dockerRoutes_1.default);
 app.use("/", mcpRoute_1.default);
 app.use("/api", mcpRoute_1.default);
-app.listen(port, () => {
-    console.log(`🚀 Docker Automation API running at http://localhost:${port}`);
+app.listen(port, "0.0.0.0", () => {
+    console.log(`🚀 Docker Automation API running on port ${port}`);
 });
+
