@@ -1,0 +1,67 @@
+{
+  "name": "docker-automation-desktop",
+  "version": "1.0.0",
+  "description": "Desktop application for Docker Automation — manage Docker containers from your local system",
+  "main": "electron/main.js",
+  "author": "Harihkvent",
+  "license": "ISC",
+  "private": true,
+  "scripts": {
+    "install:client": "cd client && npm install",
+    "install:server": "cd server && npm install",
+    "install:all": "npm install && npm run install:client && npm run install:server",
+    "build:client": "cd client && REACT_APP_API_URL=http://localhost:5000 npm run build",
+    "build:client:win": "cd client && set REACT_APP_API_URL=http://localhost:5000 && npm run build",
+    "build:server": "cd server && npm run build",
+    "build:all": "npm run build:server && npm run build:client",
+    "start:electron": "electron .",
+    "dist:linux": "npm run build:all && electron-builder --linux",
+    "dist:win": "npm run build:all && electron-builder --win",
+    "dist": "npm run build:all && electron-builder"
+  },
+  "build": {
+    "appId": "com.harihkvent.docker-automation",
+    "productName": "Docker Automation",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "electron/**/*",
+      "client/build/**/*",
+      "server/dist/**/*",
+      "server/node_modules/**/*",
+      "server/package.json"
+    ],
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb",
+        "rpm"
+      ],
+      "icon": "client/public/docker.png",
+      "category": "Development"
+    },
+    "win": {
+      "target": [
+        "nsis"
+      ],
+      "icon": "client/public/docker.png"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true
+    },
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "Harihkvent",
+        "repo": "Docker-Automation"
+      }
+    ]
+  },
+  "devDependencies": {
+    "electron": "^33.3.1",
+    "electron-builder": "^25.1.8"
+  }
+}

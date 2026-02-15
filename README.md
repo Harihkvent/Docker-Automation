@@ -55,6 +55,10 @@ The project aims to automate Docker container management tasks using Interface. 
 ## Additional Notes
 - We welcome contributions of all forms, whether it's through code contributions, bug reports, feature suggestions, documentation improvements, or even sharing your experiences and ideas. 
 
+## Desktop App
+
+Docker Automation can also run as a standalone desktop application on Linux and Windows using Electron. See the **[Desktop App Guide](DESKTOP_APP.md)** for installation and packaging instructions.
+
 
 
 
