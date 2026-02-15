@@ -15,6 +15,22 @@ describe('api.js - getApiUrl', () => {
     expect(API_URL).toBe('https://52.66.195.34');
   });
 
+  test('adds https and strips port when URL has no protocol over HTTPS', () => {
+    delete global.window;
+    global.window = { location: { protocol: 'https:' } };
+    process.env.REACT_APP_API_URL = '52.66.195.34:5000';
+    const API_URL = require('./api').default;
+    expect(API_URL).toBe('https://52.66.195.34');
+  });
+
+  test('strips port from URL with trailing slash', () => {
+    delete global.window;
+    global.window = { location: { protocol: 'https:' } };
+    process.env.REACT_APP_API_URL = 'http://52.66.195.34:5000/';
+    const API_URL = require('./api').default;
+    expect(API_URL).toBe('https://52.66.195.34/');
+  });
+
   test('does not modify https URL when page is served over HTTPS', () => {
     delete global.window;
     global.window = { location: { protocol: 'https:' } };
