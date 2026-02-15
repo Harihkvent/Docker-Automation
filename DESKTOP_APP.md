@@ -36,8 +36,6 @@ npm run install:all
 npm run build:all
 ```
 
-> **Windows users:** use `npm run build:client:win` instead of `npm run build:client` if the above command fails, then run `npm run build:server` separately.
-
 ### 3. Launch the App
 
 ```bash
